@@ -139,3 +139,4 @@ MEDIA_URL = '/Media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'Blog-Home'
 LOGIN_URL = 'login'
+#test baranch
