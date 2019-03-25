@@ -139,14 +139,3 @@ MEDIA_URL = '/Media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'Blog-Home'
 LOGIN_URL = 'login'
-
-
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'mail.eloike.com'
-
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'info@eloike.com'
-# EMAIL_HOST_PASSORD = 'eI}n_[Plw1f^;5WZ)g'
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
