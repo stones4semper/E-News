@@ -46,36 +46,6 @@ class CatPostListView(ListView):
     def get_queryset(self):
         return Posts.objects.filter(category=self.kwargs.get('category')).order_by('-date_posted') 
 
-class PostDetailView(DetailView):
-    model = Posts
-    template_name = 'blog/details.html'
-
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Posts 
-    template_name = 'blog/form.html'
-    # fields = ['title', 'content', 'image']
-    fields = ['title', 'category', 'content', 'image']
-    
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Posts 
-    template_name = 'blog/form.html'
-    fields = ['title', 'content', 'image']
-    # fields = ['title', 'category', 'content', 'image']
-    
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        else:
-            return False
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Posts
@@ -86,14 +56,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             return False
-
-def Blogdetails(request, myId):
-    obj = get_object_or_404(Posts, id=myId)
-    context={ 
-        'post':obj,
-        'title': obj.title
-    }
-    return render(request, 'blog/details.html', context)
 
 @login_required
 def newPost(request):    
@@ -144,17 +106,11 @@ def UpdatePost(request, pk):
             'message': "An Error Occured, pls try again later"
         }
         if myForm.is_valid():
-            print('1 ww')
             if myForm.save():
-                print('2 ww')
                 response_data = {
                     'SType': 'success',
                     'message': "Saved Successfully"
                 } 
-            else:
-                print('3 ww')
-        else:
-            print('4 ww')
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     context={ 
         'form':myForm,
@@ -162,3 +118,13 @@ def UpdatePost(request, pk):
         'category': Category.objects.all()
     }
     return render(request, 'blog/update.html', context) 
+
+@login_required
+def PostDetail(request, pk):
+    obj = get_object_or_404(Posts, id=pk)
+    context={ 
+        'object':obj,
+        'title': obj.title,
+        'latests': Posts.objects.all().order_by('-id')[:5]
+    }
+    return render(request, 'blog/details.html', context) 
