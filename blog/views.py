@@ -111,10 +111,11 @@ def newPost(request):
             image = request.FILES.get('image') 
             if myForm.is_valid():
                 if Posts.objects.create(title=title, content=content, category_id=category_id, image=image, author_id=request.user.id):
+    
                     response_data = {
                         'SType': 'success',
                         'message': "Saved Successfully"
-                    }       
+                    }        
         elif request.POST.get('deyHidden') == 'category_hidden':
             CatNames = request.POST.getlist('CatName[]')
             for CatName in CatNames:
@@ -136,30 +137,24 @@ def newPost(request):
 def UpdatePost(request, pk):
     obj = get_object_or_404(Posts, id=pk)
     myForm = NewPostForm(instance = obj)
-    print('1 ppp')
     if request.method == 'POST':
-        print('2 ppp')
-        myForm = NewPostForm(request.POST)
+        myForm = NewPostForm(request.POST, request.FILES, instance=obj)
         response_data = {
             'SType': 'danger',
             'message': "An Error Occured, pls try again later"
         }
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        category_id = request.POST.get('category')
-        image = request.FILES.get('image') 
         if myForm.is_valid():
-            print('3 ppp')
-            if Posts.objects.filter(pk=pk).update(title=title, content=content, image=image, category_id=category_id):
-                print('4 ppp')
+            print('1 ww')
+            if myForm.save():
+                print('2 ww')
                 response_data = {
                     'SType': 'success',
                     'message': "Saved Successfully"
                 } 
             else:
-                print('5 ppp')
+                print('3 ww')
         else:
-            print('6 ppp')
+            print('4 ww')
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     context={ 
         'form':myForm,

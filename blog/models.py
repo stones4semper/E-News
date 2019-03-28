@@ -12,7 +12,6 @@ class Category(models.Model):
         return self.CatName
 
 class Posts(models.Model):
-
     title = models.CharField(max_length=100)
     category = models.ForeignKey(Category, default="1", on_delete=models.CASCADE)
     content = models.TextField()

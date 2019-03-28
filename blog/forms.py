@@ -5,7 +5,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Posts
         fields = ['title', 'category', 'content', 'image']
- 
+
 
 class CatPostForm(forms.ModelForm): 
     class Meta: 
