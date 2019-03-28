@@ -44,7 +44,8 @@ class CatPostListView(ListView):
     paginate_by = pagNum
 
     def get_queryset(self):
-        return Posts.objects.filter(category=self.kwargs.get('category')).order_by('-date_posted') 
+        DeyId = get_object_or_404(Category, CatName=self.kwargs.get('category'))  
+        return Posts.objects.filter(category_id=DeyId).order_by('-date_posted') 
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

@@ -1,20 +1,32 @@
  {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %} 
 <div class="row justify-content-center mt-4">
-    <div class="col-md-6 col-sm-8 bg-white rounded shadow-lg mt-4 pt-2 px-5 pb-5">
+    <div class="col-md-8 col-sm-8 bg-white rounded shadow-lg mt-4 pt-2 px-5 pb-5">
         <div class="card w100 border-0">
-            <img class="card-img-top mt-2 profilePix" src="{{user.profile.image.url}}" alt="">
+            
             <div class="card-body">
-                <h5 class="card-title">{{user.username}}</h5>                
-                <form action="." enctype="multipart/form-data" method="POST"> {% csrf_token %}
+                <form action="." enctype="multipart/form-data" method="POST" id="ProUpdate__form"> {% csrf_token %}
                     <fieldset class="form-group">
                         <legend class="border-bottom mb-4">Edit your Profile Info</legend>
-                        {{ p_form | crispy }}
-                        {{ u_form | crispy }}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ u_form.first_name | as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ u_form.last_name | as_crispy_field }}
+                            </div> 
+                        </div> 
+                        <div class="ImgToHide">
+                            {{ p_form.image | as_crispy_field }}
+                        </div>
+                        <img class="card-img-top mt-2 profilePix" src="{{user.profile.image.url}}" alt="">
                     </fieldset>
                     <div class="form-group">
-                        <button class="btn btn-outline-info" type="submit">Update</button>
+                        <h6 id="ProUpdate__show"></h6>
+                        <img src="{% static 'images/ajax-loader.gif' %}" style="Display:none;" id="ProUpdate__img">
+                        <button class="btn btn-outline-info" type="submit"  onclick="submit_form('ProUpdate__form', 'ProUpdate__submit', 'ProUpdate__img', 'ProUpdate__show', 'yes')" id="ProUpdate__submit">Update</button>
                     </div>
                 </form>
             </div>
@@ -31,6 +43,9 @@
                 }
                 fileReader.readAsDataURL(this.files[0]);
             }
+        })
+        $('.profilePix').click(function(){
+            $('#id_image').trigger('click')
         })
     })
 </script>
