@@ -61,7 +61,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 def newPost(request):    
     deyCat = Category.objects.all() 
     if request.method =='POST':
-        myForm = NewPostForm(request.POST)
+        myForm = NewPostForm(request.POST, request.FILES)
         response_data = {
             'SType': 'danger',
             'message': "An Error Occured, pls try again later"
@@ -73,11 +73,11 @@ def newPost(request):
             image = request.FILES.get('image') 
             if myForm.is_valid():
                 if Posts.objects.create(title=title, content=content, category_id=category_id, image=image, author_id=request.user.id):
-    
                     response_data = {
                         'SType': 'success',
                         'message': "Saved Successfully"
-                    }        
+                    }   
+            return HttpResponse(json.dumps(response_data), content_type="application/json")  
         elif request.POST.get('deyHidden') == 'category_hidden':
             CatNames = request.POST.getlist('CatName[]')
             for CatName in CatNames:
@@ -109,7 +109,7 @@ def UpdatePost(request, pk):
             if myForm.save():
                 response_data = {
                     'SType': 'success',
-                    'message': "Saved Successfully"
+                    'message': "Updated Successfully"
                 } 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     context={ 
