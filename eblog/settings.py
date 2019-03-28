@@ -131,7 +131,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATICFILES_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+STATICFILES_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 MEDIA_URL = '/Media/'
@@ -139,3 +139,4 @@ MEDIA_URL = '/Media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'Blog-Home'
 LOGIN_URL = 'login'
+#test baranch
