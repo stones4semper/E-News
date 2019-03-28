@@ -21,7 +21,7 @@
                         <div class="ImgToHide">
                             {{ p_form.image | as_crispy_field }}
                         </div>
-                        <img class="card-img-top mt-2 profilePix" src="{{user.profile.image.url}}" alt="">
+                        <img class="card-img-top mt-2 PoNeImg img-responsive" style="width: 90%;" src="{{user.profile.image.url}}" alt="">
                     </fieldset>
                     <div class="form-group">
                         <h6 id="ProUpdate__show"></h6>
@@ -39,12 +39,12 @@
             if (this.files[0]) {
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
-                    $(".profilePix").attr('src', e.target.result);
+                    $(".PoNeImg").attr('src', e.target.result);
                 }
                 fileReader.readAsDataURL(this.files[0]);
             }
         })
-        $('.profilePix').click(function(){
+        $('.PoNeImg').click(function(){
             $('#id_image').trigger('click')
         })
     })

@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
+import json
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
@@ -31,6 +33,7 @@ def profile(request):
                 'SType': 'danger',
                 'message': "An Error Occured, pls try again later"
             }
+            print(response_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         u_form = UserUpdateForm(instance=request.user)
