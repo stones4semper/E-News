@@ -118,7 +118,6 @@ def UpdatePost(request, pk):
     }
     return render(request, 'blog/update.html', context) 
 
-@login_required
 def PostDetail(request, pk):
     obj = get_object_or_404(Posts, id=pk)
     nextPost = Posts.objects.filter(id__gt=obj.id).order_by('id').first()

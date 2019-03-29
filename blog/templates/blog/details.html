@@ -19,7 +19,7 @@
                 </p>
                 <p class="blog-post-meta text-muted">
                     {{object.date_posted | date:"F dS, Y"}} 
-                    {% comment %} By <a href="{% url 'Blog-User' object.author.username %}" >{{object.author.profile.fullName}} </a> {% endcomment %}
+                    By <a href="{% url 'Blog-User' object.author.username %}" >{{object.author.profile.fullName}} </a>
                 </p>
 
                 <p>{{object.content}}</p>
