@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 import json
 from django.contrib.auth.models import User
@@ -130,3 +131,18 @@ def PostDetail(request, pk):
         'latests': Posts.objects.all().order_by('-id')[:5]
     }
     return render(request, 'blog/details.html', context) 
+
+
+def index(request):
+    posts_list = Posts.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts_list, pagNum)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'blog/home.html', { 'posts': posts })
