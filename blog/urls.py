@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
         PostDeleteView,
         UserPostListView,
-        CatPostListView,
+        CatPostListView, 
+        NewPostView,
     )
 
 urlpatterns = [
@@ -13,6 +14,8 @@ urlpatterns = [
     path('post/<int:pk>/details/', views.PostDetail, name="Blog-details"),
     path('post/<int:pk>/update/', views.UpdatePost, name="Blog-Update"),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name="Blog-Delete"),
-    path('post/new/', views.newPost, name="Blog-create"),
+    # path('post/new/', views.newPost, name="Blog-create"),
+    path('post/new/', NewPostView.as_view(), name="Blog-create"),
+
     path('post/about/', views.about, name="Blog-About"),
 ] 

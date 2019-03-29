@@ -12,7 +12,8 @@ from django.views.generic import (
     DetailView, 
     UpdateView,
     CreateView,
-    DeleteView
+    DeleteView,
+    TemplateView
 )
 
 pagNum = 3
@@ -125,9 +126,8 @@ def PostDetail(request, pk):
     }
     return render(request, 'blog/details.html', context) 
 
-
 def index(request):
-    posts_list = Posts.objects.all()
+    posts_list = Posts.objects.all().order_by('-date_posted')
     page = request.GET.get('page', 1)
 
     paginator = Paginator(posts_list, pagNum)
@@ -139,3 +139,44 @@ def index(request):
         posts = paginator.page(paginator.num_pages)
 
     return render(request, 'blog/home.html', { 'posts': posts })
+
+class NewPostView(TemplateView):
+    template_name = 'blog/form.html'
+    deyCat = Category.objects.all()
+
+    def get(self, request, **kwargs):
+        context = {
+            'form': NewPostForm(),
+            'title': 'Create Post',
+            'category': self.deyCat
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, **kwargs):
+        myForm = NewPostForm(request.POST, request.FILES)
+        response_data = {
+            'SType': 'danger',
+            'message': "An Error Occured, pls try again later"
+        }
+        if request.POST.get('deyHidden') == 'create_hidden':
+            title = request.POST.get('title')
+            content = request.POST.get('content')
+            category_id = request.POST.get('category')
+            image = request.FILES.get('image')
+            if myForm.is_valid():
+                if Posts.objects.create(title=title, content=content, category_id=category_id, image=image,
+                                        author_id=request.user.id):
+                    response_data = {
+                        'SType': 'success',
+                        'message': "Saved Successfully"
+                    }
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        elif request.POST.get('deyHidden') == 'category_hidden':
+            CatNames = request.POST.getlist('CatName[]')
+            for CatName in CatNames:
+                Category.objects.get_or_create(CatName=CatName)
+            response_data = {
+                'SType': 'success',
+                'message': "Saved Successfully"
+            }
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
