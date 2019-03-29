@@ -127,7 +127,7 @@ def PostDetail(request, pk):
     return render(request, 'blog/details.html', context) 
 
 def index(request):
-    posts_list = Posts.objects.all().order_by('-date_posted')
+    posts_list = Posts.objects.all()
     page = request.GET.get('page', 1)
 
     paginator = Paginator(posts_list, pagNum)
@@ -148,7 +148,7 @@ class NewPostView(TemplateView):
         context = {
             'form': NewPostForm(),
             'title': 'Create Post',
-            'category': self.deyCat
+            'categories': self.deyCat
         }
         return render(request, self.template_name, context)
 
