@@ -24,11 +24,12 @@
 
                 <p>{{object.content}}</p>
                 
+                
             </div>
-            {% comment %} <nav class="blog-pagination">
-                <a class="btn btn-outline-primary" href="#">Older</a>
-                <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
-            </nav> {% endcomment %}
+            <nav class="blog-pagination">
+                <a class="btn btn-outline-primary {% if not prevPost.id %} disabled {% endif %}" href="{{prevPost.get_absolute_url}}">Older</a>
+                <a class="btn btn-outline-secondary {% if not nextPost.id %} disabled {% endif %}" href="{{nextPost.get_absolute_url}}">Newer</a>
+            </nav>
 
             </div>
 
@@ -39,7 +40,7 @@
                 </div>
 
                 <div class="p-3">
-                    <h4 class="font-italic">Latesr Post</h4>                
+                    <h4 class="font-italic">Latest Post</h4>                
                     <ol class="list-unstyled mb-0">
                         {% for latest in latests %}
                             <a style="color:black" href="{{latest.get_absolute_url}}">

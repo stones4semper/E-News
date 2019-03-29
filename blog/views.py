@@ -46,7 +46,6 @@ class CatPostListView(ListView):
         DeyId = get_object_or_404(Category, CatName=self.kwargs.get('category'))  
         return Posts.objects.filter(category_id=DeyId).order_by('-date_posted') 
 
-
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Posts
     success_url = '/'
@@ -122,9 +121,13 @@ def UpdatePost(request, pk):
 @login_required
 def PostDetail(request, pk):
     obj = get_object_or_404(Posts, id=pk)
+    nextPost = Posts.objects.filter(id__gt=obj.id).order_by('id').first()
+    prevPost = Posts.objects.filter(id__lt=obj.id).order_by('-id').first()
     context={ 
         'object':obj,
         'title': obj.title,
+        'nextPost': nextPost,
+        'prevPost': prevPost,
         'latests': Posts.objects.all().order_by('-id')[:5]
     }
     return render(request, 'blog/details.html', context) 
