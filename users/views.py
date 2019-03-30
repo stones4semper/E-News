@@ -16,7 +16,7 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form':form, 'title': "Join Now"})
  
-# @login_required
+@login_required
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
