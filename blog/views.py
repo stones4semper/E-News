@@ -140,7 +140,7 @@ def index(request):
 
     return render(request, 'blog/home.html', { 'posts': posts })
 
-class NewPostView(TemplateView):
+class NewPostView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/form.html'
     deyCat = Category.objects.all()
 
